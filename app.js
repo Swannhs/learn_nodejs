@@ -2,7 +2,7 @@ const express = require('express');
 const app = express();
 const port = 4000
 
-app.get('/', (req, res) => {
+app.get('/api/vi/tours', (req, res) => {
     res.send('Hello world');
 })
 
