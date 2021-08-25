@@ -2,8 +2,12 @@ const express = require('express');
 const app = express();
 const port = 4000
 let tours = require('./dev-data/data/tours-simple.json');
-
 app.use(express.json());
+app.use(((req, res, next) => {
+    req.requestTime = new Date().toString();
+    console.log(req.requestTime)
+    next();
+}))
 
 app.get('/api/vi/tours', (req, res) => {
     res.status(200).json({
