@@ -24,6 +24,25 @@ exports.getTour = async (req, res) => {
     }
 }
 
+// DELETE SINGLE TOUR
+exports.deleteTour = async (req, res) => {
+    try {
+        const delTour = await Tour.deleteOne({id: req.params.id})
+        if (delTour){
+            res.status(202).json({
+                success: true,
+                message: 'Tour is deleted'
+            })
+        }else {
+            res.status(402).json({
+                success: false,
+                message: 'We don\'t find that tour'
+            })
+        }
+    }catch (err) {
+        res.status(400).json({message: err})
+    }
+}
 
 
 // GET ALL TOURS
