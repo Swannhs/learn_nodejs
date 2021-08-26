@@ -7,6 +7,9 @@
 const app = require('../app');
 const debug = require('debug')('learn-nodejs:server');
 const http = require('http');
+const mongoose = require('mongoose');
+require('dotenv/config');
+
 
 /**
  * Get port from environment and store in Express.
@@ -90,3 +93,10 @@ function onListening() {
         : 'port ' + addr.port;
     debug('Listening on ' + bind);
 }
+
+// Database setup
+mongoose.connect(process.env.DB_CONNECTION, {
+    useNewUrlParser: true, useUnifiedTopology: true
+},() => {
+    console.log('DB Connected')
+});
