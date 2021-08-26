@@ -28,18 +28,38 @@ exports.getTour = async (req, res) => {
 exports.deleteTour = async (req, res) => {
     try {
         const delTour = await Tour.deleteOne({id: req.params.id})
-        if (delTour){
+        if (delTour) {
             res.status(202).json({
                 success: true,
                 message: 'Tour is deleted'
             })
-        }else {
+        } else {
             res.status(402).json({
                 success: false,
                 message: 'We don\'t find that tour'
             })
         }
-    }catch (err) {
+    } catch (err) {
+        res.status(400).json({message: err})
+    }
+}
+
+// UPDATE SINGLE TOUR
+exports.updateTour = async (req, res) => {
+    try {
+        const updateTour = await Tour.updateOne({id: req.params.id}, req.body)
+        if (updateTour) {
+            res.status(202).json({
+                success: true,
+                message: 'Tour is updated'
+            })
+        } else {
+            res.status(402).json({
+                success: false,
+                message: 'We don\'t find that tour'
+            })
+        }
+    } catch (err) {
         res.status(400).json({message: err})
     }
 }
