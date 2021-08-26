@@ -2,10 +2,12 @@ const mongoose = require('mongoose');
 
 const tourSchema = mongoose.Schema({
     id: {
-        type: Number
+        type: Number,
+        unique: true
     },
     name: {
-        type: String
+        type: String,
+        required: true
     },
     duration: {
         type: Number
