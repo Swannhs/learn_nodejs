@@ -5,6 +5,10 @@ const tourController = require('../controller/tourController');
 router
     .route('/')
     .get(tourController.getTours)
-    .post(tourController.createTour)
+    .post(tourController.createTour);
 
+router
+    .route('/:id')
+    .get(tourController.getTour)
+    .delete(tourController.deleteTour)
 module.exports = router;
