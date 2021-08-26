@@ -1,5 +1,32 @@
 const Tour = require('../models/Tours');
 
+// GET SINGLE TOUR
+exports.getTour = async (req, res) => {
+    try {
+        const tour = await Tour.findOne({id: req.params.id});
+        if (tour) {
+            res.status(200).json({
+                success: true,
+                data: tour
+            });
+        } else {
+            res.status(404).json({
+                success: false,
+                message: 'Tour can\'t be found'
+            })
+        }
+
+    } catch (err) {
+        res.status(401).json({
+            success: false,
+            message: err
+        })
+    }
+}
+
+
+
+// GET ALL TOURS
 exports.getTours = async (req, res) => {
     try {
         const tours = await Tour.find();
@@ -15,23 +42,9 @@ exports.getTours = async (req, res) => {
     }
 }
 
+//CREATE NEW TOUR
 exports.createTour = async (req, res) => {
-    const data = req.body;
-    const tour = new Tour({
-        id: data.id,
-        name: data.name,
-        duration: data.duration,
-        maxGroupSize: data.maxGroupSize,
-        difficulty: data.difficulty,
-        ratingsAverage: data.ratingsAverage,
-        ratingsQuantity: data.ratingsQuantity,
-        price: data.price,
-        summary: data.summary,
-        description: data.description,
-        imageCover: data.imageCover,
-        images: data.images,
-        startDates: data.startDates
-    })
+    const tour = new Tour(req.body);
     try {
         const saveTour = await tour.save();
         res.status(201).json(saveTour);
