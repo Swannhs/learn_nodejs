@@ -1,38 +1,37 @@
+const createError = require('http-errors');
 const express = require('express');
+const path = require('path');
+const cookieParser = require('cookie-parser');
+const logger = require('morgan');
+
+const indexRouter = require('./routes/tourRoutes');
+
 const app = express();
-const port = 4000
-let tours = require('./dev-data/data/tours-simple.json');
+
+
+app.use(logger('dev'));
 app.use(express.json());
-app.use(((req, res, next) => {
-    req.requestTime = new Date().toString();
-    console.log(req.requestTime)
-    next();
-}))
+app.use(express.urlencoded({extended: false}));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, 'public')));
 
-app.get('/api/vi/tours', (req, res) => {
-    res.status(200).json({
-        status: 'success',
-        results: tours.length,
-        data: {
-            tours: tours
-        }
-    })
-})
+app.use('/api/vi/tours', indexRouter);
 
-app.post('/api/vi/tours', (req, res) => {
-    const newId = tours[tours.length - 1].id + 1;
-    const newTour = Object.assign({id: newId}, req.body)
-    tours += {
-        tours: newTour
-    }
-    res.status(201).json({
-        status: 'success',
-        data: {
-            newTour
-        }
-    })
-})
+// catch 404 and forward to error handler
+app.use(function (req, res, next) {
+    next(createError(404));
+});
 
-app.listen(port, () => {
-    console.log(`App is running on http://localhost:${port}`)
-})
+// error handler
+app.use(function (err, req, res, next) {
+    // set locals, only providing error in development
+    res.locals.message = err.message;
+    res.locals.error = req.app.get('env') === 'development' ? err : {};
+
+    // render the error page
+    res.status(err.status || 500);
+    res.render('error');
+});
+
+
+module.exports = app;
